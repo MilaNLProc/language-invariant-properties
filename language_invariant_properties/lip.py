@@ -7,6 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
 from language_invariant_properties.metrics import *
 import abc
+from tqdm import tqdm
 
 class AbstractClassifier(abc.ABC):
 
@@ -38,13 +39,14 @@ class Dataset(abc.ABC):
 
     def score(self, translated_text):
         source_train, target_train, source_test = self.train_data()
-        source_predictions, target_predictions = self.compute(source_train, target_train, source_test, translated_text)
+        source_predictions, target_predictions = self.compute(source_test, translated_text, source_train, target_train)
 
         return {"KL": get_kl(source_predictions, target_predictions),
                 "significance": get_significance(source_predictions, target_predictions),
                 "accuracy_score": accuracy_score(source_predictions, target_predictions)}
 
     def train_classifier(self, text, labels):
+
         pipeline = Pipeline(
             [("vectorizer", TfidfVectorizer(analyzer='char',
                                             ngram_range=(2, 6), sublinear_tf=True, min_df=0.001,
@@ -62,7 +64,8 @@ class Dataset(abc.ABC):
 
         return clf
 
-    def compute(self, source_test, target_test, source_train=None, target_train=None):
+    def compute(self, source_test, target_test, source_train, target_train):
+        assert len(source_test["text"].values) == len(target_test)
 
         if source_train is not None and target_train is not None:
 
@@ -76,6 +79,8 @@ class Dataset(abc.ABC):
 
             target_classifier = self.train_classifier(target_train["text"].values, target_labels)
             target_predictions = target_classifier.predict(target_test)
+
+            print(len(target_predictions, ))
 
             return source_predictions, target_predictions
 
@@ -97,7 +102,7 @@ class TrustPilot(Dataset):
         self.base_folder = "trustpilot"
 
     def load_data(self, language, prop, task):
-        data = pd.read_csv(f"../data/{self.base_folder}/{task}/{language}.csv")
+        data = pd.read_csv(f"data/{self.base_folder}/{task}/{language}.csv")
         data = data[["text", prop]]
         data["text"] = data.text.apply(str)
         data.columns = ["text", "property"]
@@ -113,13 +118,59 @@ class TrustPilot(Dataset):
 
         return source_train, target_train, source_test
 
+class SemEval(Dataset):
+
+    def __init__(self, source_language, target_language):
+        super().__init__()
+        self.source_language = source_language
+        self.target_language = target_language
+        self.base_folder = "semeval"
+        self.text_to_translate = None
+
+    def load_data(self, language, task):
+        data = pd.read_csv(f"data/{self.base_folder}/{task}/{language}.csv")
+        data = data[["text", "HS"]]
+        data["text"] = data.text.apply(str)
+        g = data.groupby('HS')
+        data = g.apply(lambda x: x.sample(g.size().min()).reset_index(drop=True))
+
+        data.columns = ["text", "property"]
+        return data
+
+    def get_text_to_translate(self):
+        if self.text_to_translate is None:
+            self.text_to_translate = self.load_data(self.source_language, "test")
+            return self.text_to_translate
+        else:
+            return self.text_to_translate
+
+    def train_data(self):
+        source_train = self.load_data(self.source_language, "train")
+        target_train = self.load_data(self.target_language,  "train")
+        source_test = self.get_text_to_translate()
+        return source_train, target_train, source_test
+
+tp = SemEval("spanish", "english")
+
+k = (tp.get_text_to_translate()["text"].values)
+
+from transformers import MarianTokenizer, MarianMTModel
+from transformers import pipeline
 
 
+mname = 'Helsinki-NLP/opus-mt-es-en'
 
+model = MarianMTModel.from_pretrained(mname)
+tok = MarianTokenizer.from_pretrained(mname)
+translation = pipeline("translation_es_to_en", model=model, tokenizer=tok)
 
+t = []
+pbar = tqdm(total=len(k))
+for a in k:
+    t.append(translation(a)[0]["translation_text"])
+    pbar.update(1)
 
-
-
+print(tp.score(t))
 
 
 

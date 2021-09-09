@@ -5,7 +5,7 @@
 
 import unittest
 
-from language_invariant_properties import language_invariant_properties
+from language_invariant_properties import lip
 
 
 class TestLanguage_invariant_properties(unittest.TestCase):
