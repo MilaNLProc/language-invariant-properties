@@ -17,7 +17,7 @@ Language Invariant Properties (WIP)
 
 
 * Free software: MIT license
-* Documentation: https://mt-gabb.readthedocs.io.
+* Documentation: https://language-invariant-properties.readthedocs.io.
 
 
 Features
@@ -33,7 +33,7 @@ Features
 
     tp.score(text_to_translate) # get KL and significance
 
-A more concrete example is given in the following listing:
+A more concrete example using the Transformer library is given in the following listing:
 
 .. code-block:: python
 
