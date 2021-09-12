@@ -2,6 +2,7 @@ import pandas as pd
 from language_invariant_properties.abstraction import Dataset
 from appdirs import *
 
+
 class TrustPilot(Dataset):
 
     def __init__(self, source_language, target_language, prop):
@@ -12,8 +13,9 @@ class TrustPilot(Dataset):
         self.base_folder = "trustpilot"
 
     def load_data(self, language, prop, task):
-        ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-        data = pd.read_csv(f"{ROOT_DIR}/data/{self.base_folder}/{task}/{language}.csv")
+        root_dir = os.path.dirname(os.path.abspath(__file__))
+        data = pd.read_csv(f"{root_dir}/data/{self.base_folder}/{task}/{language}.csv")
+
         data = data[["text", prop]]
         data["text"] = data.text.apply(str)
         data.columns = ["text", "property"]

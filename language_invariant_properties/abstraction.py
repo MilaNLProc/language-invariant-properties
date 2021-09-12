@@ -3,7 +3,6 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import accuracy_score
 from language_invariant_properties.metrics import *
 import abc
 
@@ -42,9 +41,16 @@ class Dataset(abc.ABC):
         source_predictions, target_predictions = self.compute(original_language_data, translated_language_data,
                                                               source_train, target_train)
 
-        return {"KL": get_kl(source_predictions, target_predictions),
-                "significance": get_significance(source_predictions, target_predictions),
-                "accuracy_score": accuracy_score(source_predictions, target_predictions)}
+        original_data = original_language_data["property"].values.tolist()
+
+        return {"KL_source": get_kl(original_data, source_predictions),
+                "KL_transformed":  get_kl(original_data, target_predictions),
+                #"significance_source": get_significance(original_data, source_predictions),
+                #"significance_transformed": get_significance(original_data, target_predictions),
+                "original_distribution": dict(Counter(original_data)),
+                "source_distribution": dict(Counter(source_predictions)),
+                "transformed_distribution": dict(Counter(target_predictions)),
+                }
 
     def train_classifier(self, text, labels):
 
@@ -82,9 +88,7 @@ class Dataset(abc.ABC):
             target_classifier = self.train_classifier(target_train["text"].values, target_labels)
             target_predictions = target_classifier.predict(translated_language_data)
 
-            print(len(target_predictions, ))
-
-            return source_predictions, target_predictions
+            return le.inverse_transform(source_predictions), le.inverse_transform(target_predictions)
 
         else:
 
