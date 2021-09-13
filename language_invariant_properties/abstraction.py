@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from language_invariant_properties.metrics import *
+from language_invariant_properties.classifiers.transformers import TransformerClassifier
 import abc
 import pandas as pd
 import seaborn as sns
@@ -26,12 +27,17 @@ class AbstractClassifier(abc.ABC):
 
 class Dataset(abc.ABC):
 
-    def __init__(self, source_classifier: AbstractClassifier = None, target_classifier: AbstractClassifier = None):
+    def __init__(self, source_language, target_language, source_classifier: AbstractClassifier = None,
+                 target_classifier: AbstractClassifier = None,
+                 transformer=False):
         self.source_classifier = source_classifier
         self.target_classifier = target_classifier
+        self.source_language = source_language
+        self.target_language = target_language
         self.source_predictions = None
         self.target_predictions = None
         self.original_data = None
+        self.transformer = transformer
 
     @abc.abstractmethod
     def get_text_to_translate(self):
@@ -63,24 +69,31 @@ class Dataset(abc.ABC):
                 "distribution_PT": dict(Counter(prediction_on_transformed)),
                 }
 
-    def train_classifier(self, text, labels):
+    def train_classifier(self, text, labels, language):
 
-        pipeline = Pipeline(
-            [("vectorizer", TfidfVectorizer(analyzer='char',
-                                            ngram_range=(2, 6), sublinear_tf=True, min_df=0.001,
-                                            max_df=0.6)),
-             ("classifier", LogisticRegression(n_jobs=-1,
-                                               solver='saga',
-                                               multi_class='auto',
-                                               class_weight='balanced'))])
+        if self.transformer:
+            tc = TransformerClassifier(language)
+            tc.train(text, labels)
+            return tc
 
-        param_grid = {'classifier__C': [5.0, 2.0, 1.0, 0.5, 0.1]}
-        search = GridSearchCV(pipeline, param_grid, cv=5, scoring='f1_micro', n_jobs=-1)
-        search.fit(text, labels)
-        clf = search.best_estimator_
-        clf.fit(text, labels)
+        else:
 
-        return clf
+            pipeline = Pipeline(
+                [("vectorizer", TfidfVectorizer(analyzer='char',
+                                                ngram_range=(2, 6), sublinear_tf=True, min_df=0.001,
+                                                max_df=0.6)),
+                 ("classifier", LogisticRegression(n_jobs=-1,
+                                                   solver='saga',
+                                                   multi_class='auto',
+                                                   class_weight='balanced'))])
+
+            param_grid = {'classifier__C': [5.0, 2.0, 1.0, 0.5, 0.1]}
+            search = GridSearchCV(pipeline, param_grid, cv=5, scoring='f1_micro', n_jobs=-1)
+            search.fit(text, labels)
+            clf = search.best_estimator_
+            clf.fit(text, labels)
+
+            return clf
 
     def plot(self):
         df = pd.DataFrame()
@@ -108,10 +121,10 @@ class Dataset(abc.ABC):
             source_labels = le.fit_transform(source_train["property"].values)
             target_labels = le.transform(target_train["property"].values)
 
-            source_classifier = self.train_classifier(source_train["text"].values, source_labels)
+            source_classifier = self.train_classifier(source_train["text"].values, source_labels, self.source_language)
             source_predictions = source_classifier.predict(original_language_data["text"].values)
 
-            target_classifier = self.train_classifier(target_train["text"].values, target_labels)
+            target_classifier = self.train_classifier(target_train["text"].values, target_labels, self.target_language)
             target_predictions = target_classifier.predict(translated_language_data)
 
             return le.inverse_transform(source_predictions), le.inverse_transform(target_predictions)

@@ -6,9 +6,8 @@ from appdirs import *
 class TrustPilot(Dataset):
 
     def __init__(self, source_language, target_language, prop):
-        super().__init__()
-        self.source_language = source_language
-        self.target_language = target_language
+        super().__init__(source_language, target_language)
+
         self.prop = prop
         self.base_folder = "trustpilot"
 
@@ -35,9 +34,8 @@ class TrustPilot(Dataset):
 class SemEval(Dataset):
 
     def __init__(self, source_language, target_language, folder_path):
-        super().__init__()
-        self.source_language = source_language
-        self.target_language = target_language
+        super().__init__(source_language, target_language)
+
         self.folder_path = folder_path
         self.text_to_translate = None
 
