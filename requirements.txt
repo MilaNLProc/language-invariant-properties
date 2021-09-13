@@ -1,3 +1,6 @@
 pandas
 sklearn
 appdirs
+seaborn
+matplotlib
+numpy

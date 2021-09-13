@@ -28,6 +28,18 @@ Language Invariant Properties.
 Features
 --------
 
+In this context, we have three "prediction sets" of interest:
+
++ original data (O): this is the data we are going to use as a test set. We will use a classifier
+on it to compute the classifier bias (i.e., how well a classifier does on this test set). Moreover, we
+will translate this dataset and use another classifier (in another language) on this data.
+
++ predicted original (PO): this is the data we obtain from running the classifier on O.
+
++ predicted transformed (PT): this is the data we obtain from running the classifier on the translated O data.
+
+The differences between O-PO and O-PT will tell us if there is a transformation bias or not.
+
 .. code-block:: python
 
     tp = TrustPilot("english", "italian", "age_cat") # selects source and target language and a property to test
@@ -62,17 +74,23 @@ A more concrete example using the Transformer library is given in the following 
 
     print(tp.score(translated))
 
+Outputs
+-------
+
+The tool is going to output a bunch of metrics that describe the difference between the
+original data and the two predicted sets (the predicted on original and the predicted on transformed).
+
 
 Tasks
 -----
 
-+-------------+-------------------------+--------------------+
-| DataSet     | Languages               | Tasks              |
-+=============+=========================+====================+
-| TrustPilot  | English, Italian        | Age, Binary Gender |
-+-------------+-------------------------+--------------------+
-| SemEval19T5 | English, Spanish        | Hate Speech        |
-+-------------+-------------------------+--------------------+
++-------------+-------------------------+-----------------------------+
+| DataSet     | Languages               | Tasks                       |
++=============+=========================+=============================+
+| TrustPilot  | English, Italian        | Age, Binary Gender          |
++-------------+-------------------------+-----------------------------+
+| SemEval19T5 | English, Spanish        | Hate Speech Detection       |
++-------------+-------------------------+-----------------------------+
 
 For SemEval data, interested users should ask access `here <https://github.com/MilaNLProc/language-invariant-properties>`_. Users can place
 the files in a folder they like, but they should split the data in a format similar to the one already provided for the
