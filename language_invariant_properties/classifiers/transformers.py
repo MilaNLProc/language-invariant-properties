@@ -63,7 +63,7 @@ class TransformerTuner:
         texts = np.array(texts)
         labels = np.array(labels)
 
-        X_train, X_test, y_train, y_test = train_test_split(texts, labels, test_size = 0.15, random_state = 11)
+        X_train, X_test, y_train, y_test = train_test_split(texts, labels, test_size=0.15, random_state=11)
 
         current_f1 = -1
 

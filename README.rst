@@ -1,4 +1,3 @@
-
 =============================
 Language Invariant Properties
 =============================
@@ -14,7 +13,7 @@ Language Invariant Properties
         :target: https://language-invariant-properties.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
-Language Invariant Properties (WIP)
+Language Invariant Properties (WIP, might break)
 
 * Free software: MIT license
 * Documentation: https://language-invariant-properties.readthedocs.io.
@@ -82,8 +81,14 @@ original data and the two predicted sets (the predicted on original and the pred
 Scores
 ~~~~~~
 
+
+
 Plots
 ~~~~~
+
+It is possible to generate plots that show the distribution of the predicted labels. For example, here
+we represent the results from `Hovy et al. (2020) <https://www.aclweb.org/anthology/2020.acl-main.154/>`_
+showing that translating italian to english makes the text sound "more male".
 
 .. image:: https://raw.githubusercontent.com/MilaNLProc/language-invariant-properties/master/img/bias_example.png
    :align: center
@@ -103,6 +108,11 @@ Tasks
 For SemEval data, interested users should ask access `here <https://github.com/MilaNLProc/language-invariant-properties>`_. Users can place
 the files in a folder they like, but they should split the data in a format similar to the one already provided for the
 TrustPilot data (train/test folders, a file for each language).
+
+Note
+----
+
+The general API is still in an early version. A few things might change.
 
 Credits
 -------

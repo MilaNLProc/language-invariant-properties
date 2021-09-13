@@ -4,3 +4,5 @@ appdirs
 seaborn
 matplotlib
 numpy
+torch
+transformers
