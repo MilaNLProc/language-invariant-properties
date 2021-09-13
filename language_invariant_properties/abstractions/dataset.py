@@ -34,9 +34,9 @@ class Dataset(abc.ABC):
     def score(self, translated_language_data):
         source_train, target_train, original_language_data = self.train_data()
 
-        prediction_on_original, prediction_on_transformed = \
-            self.compute(original_language_data, translated_language_data,
-                         source_train, target_train)
+        prediction_on_original, prediction_on_transformed =  self.compute(original_language_data,
+                                                                          translated_language_data,
+                                                                          source_train, target_train)
 
         original_data = original_language_data["property"].values.tolist()
 

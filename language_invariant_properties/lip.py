@@ -1,7 +1,6 @@
 import pandas as pd
-from language_invariant_properties.abstraction import Dataset
-from appdirs import *
-
+from language_invariant_properties.abstractions.dataset import Dataset
+import os
 
 class TrustPilot(Dataset):
 

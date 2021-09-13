@@ -48,14 +48,17 @@ The differences between O-PO and O-PT will tell us if there is a transformation 
 
     tp.score(text_to_translate) # get KL and significance
 
-A more concrete example using the Transformer library is given in the following listing:
+
+A more concrete on how to integrate this into translation pipeline is presented
+in the following listing, where we use the Transformer library to translate text from
+spanish to english.
 
 .. code-block:: python
 
     from transformers import MarianTokenizer, MarianMTModel
     from transformers import pipeline
 
-    tp = SemEval("spanish", "english", "location/of_the_files/)
+    tp = SemEval("spanish", "english", "location/of_the_files/")
 
     to_translate = tp.get_text_to_translate()["text"].values
 
@@ -108,6 +111,35 @@ Tasks
 For SemEval data, interested users should ask access `here <https://github.com/MilaNLProc/language-invariant-properties>`_. Users can place
 the files in a folder they like, but they should split the data in a format similar to the one already provided for the
 TrustPilot data (train/test folders, a file for each language).
+
+New Task
+--------
+
+Adding a new Task should be easy. See for example how we model this
+for the TrustPilot dataset.
+
+.. code-block:: python
+
+    class TrustPilot(Dataset):
+
+        def __init__(self, source_language, target_language, prop):
+            super().__init__(source_language, target_language)
+
+            self.prop = prop
+            self.base_folder = "trustpilot"
+
+        def load_data(self, language, prop, task):
+            root_dir = os.path.dirname(os.path.abspath(__file__))
+            data = pd.read_csv(f"{root_dir}/data/{self.base_folder}/{task}/{language}.csv")
+
+            data = data[["text", prop]]
+            data["text"] = data.text.apply(str)
+            data.columns = ["text", "property"]
+            return data
+
+        def get_text_to_translate(self):
+            return self.load_data(self.target_language, self.prop, "test")
+
 
 Note
 ----
