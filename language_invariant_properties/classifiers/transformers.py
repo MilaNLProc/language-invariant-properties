@@ -1,10 +1,9 @@
-from transformers import AutoModel, AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
-from sklearn.model_selection import StratifiedKFold
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 import numpy as np
 import torch
 from language_invariant_properties.classifiers.datasets import MainDataset
 from transformers import AdamW
-from language_invariant_properties.abstraction import AbstractClassifier
+from language_invariant_properties.abstractions.classifiers import AbstractClassifier
 from torch.utils.data import DataLoader
 import os
 from sklearn.metrics import f1_score
@@ -15,13 +14,14 @@ from sklearn.preprocessing import LabelEncoder
 LANGUAGE_MAPPER = \
 {
     "english": ("roberta-base", "roberta-base"),
-    "italian": ("Musixmatch/umberto-commoncrawl-cased-v1", "Musixmatch/umberto-commoncrawl-cased-v1")
+    "italian": ("Musixmatch/umberto-commoncrawl-cased-v1", "Musixmatch/umberto-commoncrawl-cased-v1"),
+    "spanish": ("bertin-project/bertin-roberta-base-spanish", "bertin-project/bertin-roberta-base-spanish")
 }
 
 
 class TransformerClassifier(AbstractClassifier):
 
-    def __init__(self, language, experiment_name = None):
+    def __init__(self, language, experiment_name=None):
         super().__init__()
         if language not in LANGUAGE_MAPPER.keys():
             raise Exception("Language not supported")
@@ -54,11 +54,12 @@ class TransformerTuner:
 
     def train_with_es(self, texts, labels, epochs=10, batch_size=16, learning_rate=5e-5, save_name=None):
         """
-        This methods train the transformer using early stopping on the MacroF1.
+        This methods trains the transformer using early stopping on the MacroF1.
         """
 
         config = AutoConfig.from_pretrained(self.model_name, num_labels=len(set(labels)),
                                             finetuning_task="custom")
+
         tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_name)
         texts = np.array(texts)
         labels = np.array(labels)
@@ -129,7 +130,6 @@ class TransformerTuner:
         return current_f1
 
     def predict(self, texts, batch_size):
-
 
         tokenized_train = self.tokenizer(texts, truncation=True, padding=True)
 
