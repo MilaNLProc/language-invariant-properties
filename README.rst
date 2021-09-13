@@ -7,8 +7,8 @@ Language Invariant Properties
 .. image:: https://img.shields.io/pypi/v/language_invariant_properties.svg
         :target: https://pypi.python.org/pypi/language_invariant_properties
 
-.. image:: https://img.shields.io/travis/vinid/language_invariant_properties.svg
-        :target: https://travis-ci.com/vinid/language_invariant_properties
+.. image:: https://github.com/MilaNLProc/language-invariant-properties/workflows/Python%20package/badge.svg
+        :target: https://github.com/MilaNLProc/language-invariant-properties/actions
 
 .. image:: https://readthedocs.org/projects/language-invariant-properties/badge/?version=latest
         :target: https://language-invariant-properties.readthedocs.io/en/latest/?version=latest
@@ -22,7 +22,8 @@ Language Invariant Properties (WIP)
 
 Meaning is influenced by a host of factors, among others who says it and when:
 "That was a sick performance" changes meaning depending on whether a 16-year-old says it at a concert or a 76-year-old after the opera.
-However, here are several properties of text that do (or should) not change when we transform the text. A positive message like ``happy birthday!'' should be perceived as positive, regardless of the speaker.  even when it is translated in Italian (i.e., buon compleanno!"). The same goes for other properties, it the text has been written by a 25 years old female it should not be perceived as written by an old man after translation. We refer to these properties as
+However, here are several properties of text that do (or should) not change when we transform the text. A positive message like "happy birthday!"
+should be perceived as positive, regardless of the speaker.  Even when it is translated in Italian (i.e., "buon compleanno!"). The same goes for other properties, it the text has been written by a 25 years old female it should not be perceived as written by an old man after translation. We refer to these properties as
 Language Invariant Properties.
 
 Features
@@ -30,9 +31,7 @@ Features
 
 In this context, we have three "prediction sets" of interest:
 
-+ original data (O): this is the data we are going to use as a test set. We will use a classifier
-on it to compute the classifier bias (i.e., how well a classifier does on this test set). Moreover, we
-will translate this dataset and use another classifier (in another language) on this data.
++ original data (O): this is the data we are going to use as a test set. We will use a classifier on it to compute the classifier bias (i.e., how well a classifier does on this test set). Moreover, we will translate this dataset and use another classifier (in another language) on this data.
 
 + predicted original (PO): this is the data we obtain from running the classifier on O.
 
@@ -86,6 +85,9 @@ Scores
 Plots
 ~~~~~
 
+.. image:: https://raw.githubusercontent.com/MilaNLProc/language-invariant-properties/master/img/bias_example.png
+   :align: center
+   :width: 200px
 
 Tasks
 -----
