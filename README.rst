@@ -87,7 +87,7 @@ Plots
 
 .. image:: https://raw.githubusercontent.com/MilaNLProc/language-invariant-properties/master/img/bias_example.png
    :align: center
-   :width: 200px
+   :width: 600px
 
 Tasks
 -----
