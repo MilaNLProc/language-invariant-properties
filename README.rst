@@ -80,6 +80,12 @@ Outputs
 The tool is going to output a bunch of metrics that describe the difference between the
 original data and the two predicted sets (the predicted on original and the predicted on transformed).
 
+Scores
+~~~~~~
+
+Plots
+~~~~~
+
 
 Tasks
 -----
