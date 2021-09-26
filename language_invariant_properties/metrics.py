@@ -2,8 +2,12 @@ from collections import Counter
 from scipy.stats import entropy
 import numpy as np
 from scipy.stats import chi2_contingency
+from sklearn.preprocessing import LabelEncoder
 
 def get_kl(a, b):
+    """
+    Computes the KL divergence
+    """
     epsilon = 0.00000001
     c1 = Counter(a)
     total1 = sum(c1.values()) + len(c1) * epsilon
@@ -16,6 +20,14 @@ def get_kl(a, b):
     return '%.3f' % entropy(c1c, c2c)
 
 def get_significance(P, Q):
+    """
+    Computes the significance using the X^2
+    """
+    le = LabelEncoder()
+
+    P = le.fit_transform(P)
+    Q = le.transform(Q)
+
     A = Counter(P)
     B = Counter(Q)
 

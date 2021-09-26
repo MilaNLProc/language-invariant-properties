@@ -15,6 +15,12 @@ Language Invariant Properties
 
 Language Invariant Properties (WIP, might break)
 
+Note
+
+    The class system I originally implemented does not support my new plans and thus I am working on fixing it.
+    Long story short: I originally defined the abstractions thinking about machine translation based tasks but I now want to move this abstraction a little bit further up.
+    Expect a mildly unstable API for a short while.
+
 * Free software: MIT license
 * Documentation: https://language-invariant-properties.readthedocs.io.
 
@@ -84,8 +90,6 @@ original data and the two predicted sets (the predicted on original and the pred
 Scores
 ~~~~~~
 
-
-
 Plots
 ~~~~~
 
@@ -100,13 +104,15 @@ showing that translating italian to english makes the text sound "more male".
 Tasks
 -----
 
-+-------------+-------------------------+-----------------------------+
-| DataSet     | Languages               | Tasks                       |
-+=============+=========================+=============================+
-| TrustPilot  | English, Italian        | Age, Binary Gender          |
-+-------------+-------------------------+-----------------------------+
-| SemEval19T5 | English, Spanish        | Hate Speech Detection       |
-+-------------+-------------------------+-----------------------------+
++-------------+-------------------------------------------------------+-----------------------------+
+| DataSet     | Languages                                             |      Tasks                  |
++=============+=======================================================+=============================+
+| TrustPilot  | English, Italian, German, Dutch                       | Age, Binary Gender          |
++-------------+-------------------------------------------------------+-----------------------------+
+| HatEval     | English, Spanish                                      | Hate Speech Detection       |
++-------------+-------------------------------------------------------+-----------------------------+
+| AiT         | English, Spanish                                      |    Sentiment                |
++-------------+-------------------------------------------------------+-----------------------------+
 
 For SemEval data, interested users should ask access `here <https://github.com/MilaNLProc/language-invariant-properties>`_. Users can place
 the files in a folder they like, but they should split the data in a format similar to the one already provided for the

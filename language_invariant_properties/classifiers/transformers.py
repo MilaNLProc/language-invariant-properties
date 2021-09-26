@@ -31,6 +31,7 @@ class TransformerClassifier(AbstractClassifier):
         self.label_encoder = LabelEncoder()
         self.experiment_name = experiment_name + "_" + language
 
+
     def train(self, text, labels):
         model_name, tokenizer_name = LANGUAGE_MAPPER[self.language]
 
