@@ -26,7 +26,7 @@ class Dataset(abc.ABC):
         self.common_classifier = common_classifier
 
     @abc.abstractmethod
-    def get_text_to_translate(self):
+    def get_text_to_transform(self):
         pass
 
     @abc.abstractmethod

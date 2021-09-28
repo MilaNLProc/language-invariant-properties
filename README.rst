@@ -15,7 +15,7 @@ Language Invariant Properties
 
 .. image:: https://raw.githubusercontent.com/MilaNLProc/language-invariant-properties/master/img/LIPs.png
    :align: center
-   :width: 300px
+   :width: 400px
 
 Language Invariant Properties (WIP, might break)
 
@@ -70,13 +70,24 @@ The differences between O-PO and O-PT will tell us if there is a transformation 
 
 .. code-block:: python
 
-    tp = TrustPilot("english", "italian", "age_cat") # selects source and target language and a property to test
+    tp = TrustPilot("english", "italian", "age_cat", "location/of_the_files/") # selects source and target language and a property to test
 
-    text_to_translate = tp.get_text_to_translate()["text"].values # get the text to translate
+    text_to_translate = tp.get_text_to_transform()["text"].values # get the text to translate
 
     translated_text = YourTranslator().translate(text_to_translate) # run your translation model
 
     tp.score(text_to_translate) # get KL and significance
+
+.. code-block:: python
+
+    tp = TrustPilotPara("english", "english", "gender", "location/of_the_files/") # selects source and target language and a property to test
+
+    text_to_paraphrase = tp.get_text_to_transform()["text"].values # get the text to translate
+
+    paraphrased_text = YourParaPhraser().paraphrase(text_to_paraphrase) # run your translation model
+
+    tp.score(paraphrased_text) # get KL and significance
+
 
 
 A more concrete on how to integrate this into translation pipeline is presented
@@ -90,7 +101,7 @@ spanish to english.
 
     tp = SemEval("spanish", "english", "location/of_the_files/")
 
-    to_translate = tp.get_text_to_translate()["text"].values
+    to_translate = tp.get_text_to_transform()["text"].values
 
     model_name = 'Helsinki-NLP/opus-mt-es-en'
 

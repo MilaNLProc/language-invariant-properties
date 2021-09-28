@@ -7,7 +7,7 @@ tp = Affect("spanish", "english",
     task="sentiment",
              cross_lingual_st=True)
 
-k = (tp.get_text_to_translate()["text"].values.tolist())
+k = (tp.get_text_to_transform()["text"].values.tolist())
 
 t = pd.read_csv("/home/vinid/PycharmProjects/language_invariant_properties/language_invariant_properties/data/affect/translated/english.csv")
 print(tp.score(t["text"].values))

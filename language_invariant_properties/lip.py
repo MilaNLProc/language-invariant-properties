@@ -20,7 +20,7 @@ class TrustPilotPara(Dataset):
         data.columns = ["text", "property"]
         return data
 
-    def get_text_to_translate(self):
+    def get_text_to_transform(self):
         return self.load_data(self.target_language, self.prop, "test")
 
     def train_data(self):
@@ -47,7 +47,7 @@ class TrustPilot(Dataset):
         data.columns = ["text", "property"]
         return data
 
-    def get_text_to_translate(self):
+    def get_text_to_transform(self):
         return self.load_data(self.target_language, self.prop, "test")
 
     def train_data(self):
@@ -88,7 +88,7 @@ class Affect(Dataset):
         return data
 
 
-    def get_text_to_translate(self):
+    def get_text_to_transform(self):
         if self.text_to_translate is None:
             self.text_to_translate = self.load_data(self.source_language, "test")
             return self.text_to_translate
@@ -98,7 +98,7 @@ class Affect(Dataset):
     def train_data(self):
         source_train = self.load_data(self.source_language, "train")
         target_train = self.load_data(self.target_language,  "train")
-        source_test = self.get_text_to_translate()
+        source_test = self.get_text_to_transform()
         return source_train, target_train, source_test
 
 
@@ -154,7 +154,7 @@ class HateEvalPara(Dataset):
         data.columns = ["text", "property"]
         return data
 
-    def get_text_to_translate(self):
+    def get_text_to_transform(self):
         if self.text_to_translate is None:
             self.text_to_translate = self.load_data(self.source_language, "test")
             return self.text_to_translate
@@ -164,5 +164,5 @@ class HateEvalPara(Dataset):
     def train_data(self):
         source_train = self.load_data(self.source_language, "train")
         target_train = self.load_data(self.target_language,  "train")
-        source_test = self.get_text_to_translate()
+        source_test = self.get_text_to_transform()
         return source_train, target_train, source_test

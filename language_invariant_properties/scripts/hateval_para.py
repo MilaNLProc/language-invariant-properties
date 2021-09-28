@@ -5,7 +5,7 @@ tp = HateEvalPara("english", "english",
                   folder_path="/home/vinid/PycharmProjects/language_invariant_properties/language_invariant_properties/data/semeval_para",
                   sentence_embedding=True, common_classifier=True)
 
-k = tp.get_text_to_translate()["text"].values
+k = tp.get_text_to_transform()["text"].values
 
 t = pd.read_csv("/home/vinid/PycharmProjects/language_invariant_properties/language_invariant_properties/data/semeval_para/transformed/english.csv")["text"].values.tolist()
 
