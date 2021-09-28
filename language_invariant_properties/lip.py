@@ -3,18 +3,17 @@ from language_invariant_properties.abstractions.dataset import Dataset
 import os
 import re
 
+
 class TrustPilotPara(Dataset):
 
-    def __init__(self, source_language, target_language, prop, **kwargs):
-        dataset_name = "trustpilot_" + prop
-        super().__init__(source_language, target_language, dataset_name, common_classifier=True, **kwargs)
+    def __init__(self, source_language, target_language, prop, folder_path, **kwargs):
+        super().__init__(source_language, target_language, common_classifier=True, **kwargs)
 
         self.prop = prop
-        self.base_folder = "trustpilot"
+        self.base_folder = folder_path
 
     def load_data(self, language, prop, task):
-        root_dir = os.path.dirname(os.path.abspath(__file__))
-        data = pd.read_csv(f"{root_dir}/data/{self.base_folder}/{task}/{language}.csv")
+        data = pd.read_csv(f"{self.base_folder}/{task}/{language}.csv")
 
         data = data[["text", prop]]
         data["text"] = data.text.apply(str)
@@ -34,16 +33,14 @@ class TrustPilotPara(Dataset):
 
 class TrustPilot(Dataset):
 
-    def __init__(self, source_language, target_language, prop, **kwargs):
-        dataset_name = "trustpilot_" + prop
-        super().__init__(source_language, target_language, dataset_name, **kwargs)
+    def __init__(self, source_language, target_language, prop, folder_path, **kwargs):
+        super().__init__(source_language, target_language, **kwargs)
 
         self.prop = prop
-        self.base_folder = "trustpilot"
+        self.base_folder = folder_path
 
     def load_data(self, language, prop, task):
-        root_dir = os.path.dirname(os.path.abspath(__file__))
-        data = pd.read_csv(f"{root_dir}/data/{self.base_folder}/{task}/{language}.csv")
+        data = pd.read_csv(f"{self.base_folder}/{task}/{language}.csv")
 
         data = data[["text", prop]]
         data["text"] = data.text.apply(str)
@@ -64,8 +61,7 @@ class TrustPilot(Dataset):
 class Affect(Dataset):
 
     def __init__(self, source_language, target_language, folder_path, task="emotion", **kwargs):
-        dataset_name = "semeval19t5"
-        super().__init__(source_language, target_language, dataset_name, **kwargs)
+        super().__init__(source_language, target_language, **kwargs)
 
         self.folder_path = folder_path
         self.text_to_translate = None
@@ -88,9 +84,6 @@ class Affect(Dataset):
 
         data["text"] = data.text.apply(self.clean_text)
 
-        #g = data.groupby('HS')
-        #data = g.apply(lambda x: x.sample(g.size().min()).reset_index(drop=True))
-
         data.columns = ["text", "property"]
         return data
 
@@ -112,8 +105,7 @@ class Affect(Dataset):
 class HatEval(Dataset):
 
     def __init__(self, source_language, target_language, folder_path, **kwargs):
-        dataset_name = "semeval19t5"
-        super().__init__(source_language, target_language, dataset_name, **kwargs)
+        super().__init__(source_language, target_language, **kwargs)
 
         self.folder_path = folder_path
         self.text_to_translate = None
@@ -136,11 +128,10 @@ class HatEval(Dataset):
         return data
 
 
-class SemEvalPara(Dataset):
+class HateEvalPara(Dataset):
 
     def __init__(self, source_language, target_language, folder_path, **kwargs):
-        dataset_name = "semeval19t5"
-        super().__init__(source_language, target_language, dataset_name, common_classifier=True, **kwargs)
+        super().__init__(source_language, target_language, common_classifier=True, **kwargs)
 
         self.folder_path = folder_path
         self.text_to_translate = None

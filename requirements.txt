@@ -1,8 +1,10 @@
-pandas
+pandas==1.3.2
 sklearn
-appdirs
-seaborn
-matplotlib
-numpy
-torch
-transformers
+appdirs==1.4.4
+seaborn==0.11.2
+matplotlib==3.4.3
+numpy==1.21.2
+torch>=1.9.0
+sentence-transformers==2.0.0
+transformers==4.10.0
+

@@ -1,9 +1,9 @@
-from language_invariant_properties.lip import SemEvalPara
+from language_invariant_properties.lip import HateEvalPara
 import pandas as pd
 
-tp = SemEvalPara("english", "english",
-                 folder_path="/home/vinid/PycharmProjects/language_invariant_properties/language_invariant_properties/data/semeval_para",
-                 sentence_embedding=True, common_classifier=True)
+tp = HateEvalPara("english", "english",
+                  folder_path="/home/vinid/PycharmProjects/language_invariant_properties/language_invariant_properties/data/semeval_para",
+                  sentence_embedding=True, common_classifier=True)
 
 k = tp.get_text_to_translate()["text"].values
 

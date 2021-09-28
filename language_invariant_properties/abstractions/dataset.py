@@ -1,6 +1,5 @@
 from sklearn.preprocessing import LabelEncoder
 from language_invariant_properties.metrics import *
-from language_invariant_properties.classifiers.transformers import TransformerClassifier
 from language_invariant_properties.classifiers.sklearn_wrapper import LogisticRegressionClassifier, LogisticRegressionSTClassifier
 import abc
 from language_invariant_properties.abstractions.classifiers import AbstractClassifier
@@ -12,8 +11,7 @@ import logging
 
 class Dataset(abc.ABC):
 
-    def __init__(self, source_language, target_language, dataset_name,
-                 source_classifier: AbstractClassifier = None,
+    def __init__(self, source_language, target_language, source_classifier: AbstractClassifier = None,
                  target_classifier: AbstractClassifier = None,
                  transformer=False, sentence_embedding=False, common_classifier=False):
         self.source_classifier = source_classifier
@@ -25,7 +23,6 @@ class Dataset(abc.ABC):
         self.original_data = None
         self.transformer = transformer
         self.sentence_embedding = sentence_embedding
-        self.dataset_name = dataset_name
         self.common_classifier = common_classifier
 
     @abc.abstractmethod
@@ -67,13 +64,7 @@ class Dataset(abc.ABC):
 
     def train_classifier(self, text, labels, language):
 
-        if self.transformer:
-            logging.info("Training Transformers: " + language)
-            tc = TransformerClassifier(language, "LIPs_" + str(language) + "_" + self.dataset_name)
-            tc.train(text, labels)
-            return tc
-
-        elif self.sentence_embedding:
+        if self.sentence_embedding:
 
             if self.common_classifier and self.source_language == "english":
                 language_passing = language
