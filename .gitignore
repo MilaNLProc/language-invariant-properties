@@ -2,7 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
-language_invariant_properties/data
+language_invariant_properties/data/affect
+language_invariant_properties/data/semeval
+language_invariant_properties/data/semeval_para
+
 # C extensions
 *.so
 
