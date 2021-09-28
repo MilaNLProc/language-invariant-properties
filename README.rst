@@ -19,21 +19,41 @@ Language Invariant Properties
 
 Language Invariant Properties (WIP, might break)
 
-Note
 
-    The class system I originally implemented does not support my new plans and thus I am working on fixing it.
-    Long story short: I originally defined the abstractions thinking about machine translation based tasks but I now want to move this abstraction a little bit further up.
-    Expect a mildly unstable API for a short while.
+
 
 * Free software: MIT license
 * Documentation: https://language-invariant-properties.readthedocs.io.
 
+Introduction
+------------
 
 Meaning is influenced by a host of factors, among others who says it and when:
 "That was a sick performance" changes meaning depending on whether a 16-year-old says it at a concert or a 76-year-old after the opera.
 However, here are several properties of text that do (or should) not change when we transform the text. A positive message like "happy birthday!"
 should be perceived as positive, regardless of the speaker.  Even when it is translated in Italian (i.e., "buon compleanno!"). The same goes for other properties, it the text has been written by a 25 years old female it should not be perceived as written by an old man after translation. We refer to these properties as
 Language Invariant Properties.
+
+.. code-block::
+
+    @misc{bianchi2021language,
+          title={Language Invariant Properties in Natural Language Processing},
+          author={Federico Bianchi and Debora Nozza and Dirk Hovy},
+          year={2021},
+          eprint={2109.13037},
+          archivePrefix={arXiv},
+          primaryClass={cs.CL}
+    }
+
+
+
+Note
+----
+
+
+The class system I originally implemented does not support my new plans and thus I am working on fixing it.
+Long story short: I originally defined the abstractions thinking about machine translation based tasks but I now want to move this abstraction a little bit further up.
+Expect a mildly unstable API for a short while.
 
 Features
 --------
