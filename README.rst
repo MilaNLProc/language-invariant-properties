@@ -160,31 +160,33 @@ for the TrustPilot dataset.
 
 .. code-block:: python
 
-    class TrustPilot(Dataset):
+    class TrustPilotPara(Dataset):
 
-        def __init__(self, source_language, target_language, prop):
-            super().__init__(source_language, target_language)
+        def __init__(self, source_language, target_language, prop, folder_path, **kwargs):
+            super().__init__(source_language, target_language, common_classifier=True, **kwargs)
 
             self.prop = prop
-            self.base_folder = "trustpilot"
+            self.base_folder = folder_path
 
         def load_data(self, language, prop, task):
-            root_dir = os.path.dirname(os.path.abspath(__file__))
-            data = pd.read_csv(f"{root_dir}/data/{self.base_folder}/{task}/{language}.csv")
+            data = pd.read_csv(f"{self.base_folder}/{task}/{language}.csv")
 
             data = data[["text", prop]]
             data["text"] = data.text.apply(str)
             data.columns = ["text", "property"]
             return data
 
-        def get_text_to_translate(self):
+        def get_text_to_transform(self):
             return self.load_data(self.target_language, self.prop, "test")
 
+        def train_data(self):
+            source_train = self.load_data(self.source_language, self.prop, "train")
+            target_train = self.load_data(self.target_language, self.prop, "train")
+            source_test = self.load_data(self.source_language, self.prop, "test")
 
-Note
-----
+            return source_train, target_train, source_test
 
-The general API is still in an early version. A few things might change.
+
 
 Credits
 -------
