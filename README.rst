@@ -17,9 +17,7 @@ Language Invariant Properties
    :align: center
    :width: 400px
 
-Language Invariant Properties (WIP, might break)
-
-
+Language Invariant Properties (WIP, and under documented, might break)
 
 
 * Free software: MIT license
