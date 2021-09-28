@@ -13,6 +13,10 @@ Language Invariant Properties
         :target: https://language-invariant-properties.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
+.. image:: https://raw.githubusercontent.com/MilaNLProc/language-invariant-properties/master/img/LIPs.png
+   :align: center
+   :width: 300px
+
 Language Invariant Properties (WIP, might break)
 
 Note
@@ -74,6 +78,7 @@ spanish to english.
     tokenizer = MarianTokenizer.from_pretrained(model_name)
     translation = pipeline("translation_es_to_en", model=model, tokenizer=tokenizer)
 
+    # not the fastest way to do this but it gives the idea
     translated = []
     for sent in to_translate:
         translated.append(translation(sent)[0]["translation_text"])
